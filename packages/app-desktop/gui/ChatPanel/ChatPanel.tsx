@@ -128,6 +128,13 @@ const ChatPanel: React.FC<Props> = (props) => {
 
 	const windowId = useContext(WindowIdContext);
 
+	const handleClose = useCallback(async () => {
+		await CommandService.instance().executeInWindow('toggleAiChat', {
+			windowId,
+			args: [],
+		});
+	}, [windowId]);
+
 	const appendMessage = useCallback((message: AiChatMessage) => {
 		dispatch({ type: 'AI_CHAT_APPEND', windowId, message });
 	}, [dispatch, windowId]);
@@ -420,6 +427,15 @@ const ChatPanel: React.FC<Props> = (props) => {
 				{showingMessages && (
 					<button type='button' className='reset' onClick={handleReset}>{_('Reset')}</button>
 				)}
+				<button
+					type='button'
+					className='close'
+					onClick={handleClose}
+					aria-label={_('Close AI Chat')}
+					title={_('Close AI Chat')}
+				>
+					×
+				</button>
 			</div>
 			{content}
 		</div>

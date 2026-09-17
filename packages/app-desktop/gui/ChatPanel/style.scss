@@ -6,8 +6,7 @@
 	box-sizing: border-box;
 	background-color: var(--joplin-background-color);
 	color: var(--joplin-color);
-	border-left: 1px solid var(--joplin-divider-color);
-	font-size: var(--joplin-font-size);
+	border-left: 1px solid var(--joplin-divider-color);	font-size: var(--joplin-font-size);
 }
 
 .chat-panel > .header {
@@ -37,7 +36,19 @@
 .chat-panel > .header > .reset:hover {
 	color: var(--joplin-color);
 }
+.chat-panel > .header > .close {
+    background: none;
+    border: none;
+    color: var(--joplin-color-faded);
+    cursor: pointer;
+    font-size: 1.8em;
+	font-weight: 800;
+    padding: 0 4px;
+}
 
+.chat-panel > .header > .close:hover {
+    color: var(--joplin-color);
+}
 .chat-panel > .degraded-status {
 	padding: 6px 10px;
 	font-size: 0.8em;

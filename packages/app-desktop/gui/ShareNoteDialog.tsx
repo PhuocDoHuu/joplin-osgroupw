@@ -68,7 +68,7 @@ export function ShareNoteDialog(props: Props) {
 
 	const renderNote = (note: NoteEntity) => {
 		const unshareButton = !props.shares.find(s => s.note_id === note.id) ? null : (
-			<Button tooltip={_('Unpublish note')} iconName="fas fa-share-alt" onClick={() => onUnshareNoteClick({ noteId: note.id })}/>
+			<Button tooltip={_('Unpublish note')} iconName="fas fa-unlink" onClick={() => onUnshareNoteClick({ noteId: note.id })}/>
 		);
 
 		return (

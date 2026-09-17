@@ -21,6 +21,9 @@ export default function styles(props: Props) {
 		};
 
 		const output: Record<string, CSSProperties> = {
+			container: {
+				display: 'flex',
+			},
 			button: {
 				border: 'none',
 				padding: 0,

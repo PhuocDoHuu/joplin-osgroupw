@@ -197,6 +197,7 @@ interface OwnProps {
 }
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps) => {
+
 	const windowState = stateUtils.windowStateById(state, ownProps.windowId);
 
 	let globalQuery = '';

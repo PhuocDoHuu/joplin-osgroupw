@@ -166,7 +166,7 @@ class NoteSearchBar extends React.Component<Props> {
 		) : null;
 
 		const editorVisible = this.props.visiblePanes.includes('editor');
-		const usesEditorSearch = this.props.editorType === 'CodeMirror6' && editorVisible;
+		const usesEditorSearch = ['CodeMirror6', 'TinyMCE'].includes(this.props.editorType) && editorVisible;
 		const allowScrolling = editorVisible;
 
 		const viewerWarning = (
