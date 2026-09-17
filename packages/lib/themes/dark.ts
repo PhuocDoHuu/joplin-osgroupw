@@ -10,6 +10,7 @@ const theme: Theme = {
 	// Color scheme "1" is the basic one, like used to display the note
 	// content. It's basically dark gray text on white background
 	backgroundColor: '#1D2024',
+	// backgroundColor: '#FFFF00',
 	backgroundColorTransparent: 'rgba(255,255,255,0.9)',
 	oddBackgroundColor: '#141517',
 	color: '#dddddd',
@@ -26,6 +27,7 @@ const theme: Theme = {
 	// Color scheme "2" is used for the sidebar. It's white text over
 	// dark blue background.
 	backgroundColor2: '#181A1D',
+	// backgroundColor2: '#FFFF00',
 	color2: '#ffffff',
 	selectedColor2: '#013F74',
 	colorError2: '#ff6c6c',

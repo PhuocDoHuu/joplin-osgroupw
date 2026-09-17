@@ -62,6 +62,7 @@ export interface VisibleDialogs {
 
 export interface AppWindowState extends WindowState {
 	noteVisiblePanes: string[];
+	scheduleView: boolean;
 	editorCodeView: boolean;
 	visibleDialogs: VisibleDialogs;
 	dialogs: AppStateDialog[];
@@ -109,6 +110,7 @@ export const createAppDefaultWindowState = (): AppWindowState => {
 		visibleDialogs: {},
 		dialogs: [],
 		noteVisiblePanes: ['editor', 'viewer'],
+		scheduleView: false,
 		editorCodeView: true,
 		devToolsVisible: false,
 		watchedResources: {},
@@ -276,6 +278,14 @@ export default function(state: AppState, action: any) {
 				...state,
 				noteVisiblePanes: action.panes,
 			};
+			break;
+
+		case 'SCHEDULE_VIEW_TOGGLE':
+			newState = withWindowStateUpdated(state, action.windowId, 'scheduleView', value => !value);
+			break;
+
+		case 'SCHEDULE_VIEW_SET':
+			newState = withWindowStateUpdated(state, action.windowId, 'scheduleView', () => !!action.value);
 			break;
 
 		case 'EDITOR_CODE_VIEW_CHANGE':

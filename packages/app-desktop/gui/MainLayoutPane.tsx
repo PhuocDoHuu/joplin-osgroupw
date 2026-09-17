@@ -16,6 +16,7 @@ import { AppState } from '../app.reducer';
 import { connect } from 'react-redux';
 import { stateUtils } from '@joplin/lib/reducer';
 import validateColumns from './NoteListHeader/utils/validateColumns';
+import ScheduleView from './ScheduleView/ScheduleView';
 
 interface Props {
 	themeId: number;
@@ -25,6 +26,7 @@ interface Props {
 	notesColumns: NoteListColumns;
 	selectedFolderId: string;
 	notesSortOrderReverse: boolean;
+	scheduleView: boolean;
 	plugins: PluginStates;
 	pluginHtmlContents: PluginHtmlContents;
 
@@ -76,6 +78,7 @@ const MainLayoutPane: React.FC<Props> = (props) => {
 		},
 
 		editor: () => {
+			if (props.scheduleView) return <ScheduleView />;
 			return <div className='note-editor-wrapper' role='main' aria-label={_('Note')}>
 				<NoteEditor
 					windowId={windowId}
@@ -168,6 +171,7 @@ export default connect((state: AppState, ownProps: OwnProps) => {
 		selectedFolderId: windowState.selectedFolderId,
 		notesSortOrderField: state.settings['notes.sortOrder.field'],
 		notesSortOrderReverse: state.settings['notes.sortOrder.reverse'],
+		scheduleView: windowState.scheduleView,
 		notesColumns: validateColumns(state.settings['notes.columns']),
 	};
 })(MainLayoutPane);

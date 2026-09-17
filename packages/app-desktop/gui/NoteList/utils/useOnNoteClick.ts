@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { Dispatch } from 'redux';
 import { FocusNote } from './useFocusNote';
+import { WindowIdContext } from '../../NewWindowOrIFrame';
 
 const useOnNoteClick = (dispatch: Dispatch, focusNote: FocusNote) => {
+	const windowId = useContext(WindowIdContext);
 	const onNoteClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
 		const noteId = event.currentTarget.getAttribute('data-id');
 
@@ -28,12 +30,14 @@ const useOnNoteClick = (dispatch: Dispatch, focusNote: FocusNote) => {
 				id: noteId,
 			});
 		} else {
+			// Selecting a note from the list should always restore the standard editor.
+			dispatch({ type: 'SCHEDULE_VIEW_SET', windowId, value: false });
 			dispatch({
 				type: 'NOTE_SELECT',
 				id: noteId,
 			});
 		}
-	}, [dispatch, focusNote]);
+	}, [dispatch, focusNote, windowId]);
 
 	return onNoteClick;
 };

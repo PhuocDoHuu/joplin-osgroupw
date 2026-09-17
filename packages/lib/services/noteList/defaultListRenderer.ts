@@ -54,6 +54,7 @@ const renderer: ListRenderer = {
 		'note.isWatched',
 		'note.title',
 		'note.todo_completed',
+		'note.todo_due',
 		'note.todoStatusText',
 	],
 
@@ -113,6 +114,11 @@ const renderer: ListRenderer = {
 				> .lockedicon {
 					padding-right: 4px;
 					color: var(--joplin-color);
+				}
+
+				> .alarm-time {
+					padding-left: 8px;
+					opacity: 0.7;
 				}
 	
 			}
@@ -188,6 +194,7 @@ const renderer: ListRenderer = {
 				<i class="watchedicon fa fa-share-square"></i>
 				{{#note.is_locked}}<i class="lockedicon fa fa-lock"></i>{{/note.is_locked}}
 				<span>{{note.title}}</span>
+				{{#note.is_todo}}{{#note.todo_due}}<span class="alarm-time">{{note.todo_due}}</span>{{/note.todo_due}}{{/note.is_todo}}
 			</div>
 			{{#checkboxStats}}
 				<div class="checkbox-pie" title="{{checked}}/{{total}}">

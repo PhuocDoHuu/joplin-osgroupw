@@ -69,10 +69,11 @@ const useItemElement = (
 		element.style.height = `${itemSize.height}px`;
 		element.innerHTML = noteHtml;
 
+		rootElement.appendChild(element);
+
 		const { cleanup } = addItemEventListeners(element, itemEventHandlers, onClick, onDoubleClick);
 		const detachTooltip = displayTitle ? attachNoteTitleTooltip(element, displayTitle) : null;
 
-		rootElement.appendChild(element);
 		itemElement.current = element;
 
 		return () => {

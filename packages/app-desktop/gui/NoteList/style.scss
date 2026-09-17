@@ -35,6 +35,15 @@
 	position: relative;
 	box-sizing: border-box;
 
+	&:before {
+		content: '';
+		border-bottom: 1px solid var(--joplin-divider-color);
+		width: 90%;
+		position: absolute;
+		bottom: 0;
+		left: 5%;
+	}
+
 	> .dragcursor {
 		background-color: var(--joplin-color);
 		position: absolute;

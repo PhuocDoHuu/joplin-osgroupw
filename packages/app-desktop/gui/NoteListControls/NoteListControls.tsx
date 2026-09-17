@@ -15,6 +15,7 @@ import { getTrashFolderId } from '@joplin/lib/services/trash';
 import { Breakpoints } from '../NoteList/utils/types';
 import { stateUtils } from '@joplin/lib/reducer';
 import { WindowIdContext } from '../NewWindowOrIFrame';
+import { Dispatch } from 'redux';
 
 interface Props {
 	showNewNoteButtons: boolean;
@@ -33,6 +34,7 @@ interface Props {
 	buttonSize: ButtonSize;
 	padding: number;
 	buttonVerticalGap: number;
+	dispatch: Dispatch;
 }
 
 interface StyleProps {
@@ -62,6 +64,11 @@ const StyledButton = styled(Button)`
   .fa, .fas {
     font-size: 11px;
   }
+`;
+
+const StyledScheduleButton = styled(Button)`
+	flex: 0 0 auto;
+	white-space: nowrap;
 `;
 
 const StyledPairButtonL = styled(Button)`
@@ -150,6 +157,10 @@ function NoteListControls(props: Props) {
 		}
 	}, [breakpoint, dynamicBreakpoints.Sm]);
 
+	const scheduleButtonText = useMemo(() => {
+		return breakpoint === dynamicBreakpoints.Xl ? _('Schedule') : '';
+	}, [breakpoint, dynamicBreakpoints.Xl]);
+
 	useEffect(() => {
 		if (lineCount === 1) {
 			noteControlsRef.current.style.flexDirection = 'row';
@@ -181,6 +192,10 @@ function NoteListControls(props: Props) {
 
 	function onSortOrderReverseButtonClick() {
 		void CommandService.instance().execute('toggleNotesSortOrderReverse');
+	}
+
+	function onScheduleButtonClick() {
+		props.dispatch({ type: 'SCHEDULE_VIEW_TOGGLE', windowId });
 	}
 
 	function sortOrderFieldTooltip() {
@@ -254,6 +269,15 @@ function NoteListControls(props: Props) {
 			{renderNewNoteButtons()}
 			<BottomRow ref={searchAndSortRef} className="search-and-sort">
 				<SearchBar inputRef={searchBarRef} windowId={windowId}/>
+				<StyledScheduleButton
+					className="schedule-view-button"
+					tooltip={_('View schedule')}
+					iconName="far fa-calendar-alt"
+					title={scheduleButtonText}
+					level={ButtonLevel.Secondary}
+					size={props.buttonSize}
+					onClick={onScheduleButtonClick}
+				/>
 				{showsSortOrderButtons() &&
 					<SortOrderButtonsContainer>
 						<StyledPairButtonL

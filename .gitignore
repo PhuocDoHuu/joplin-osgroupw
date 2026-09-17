@@ -457,6 +457,7 @@ packages/app-desktop/gui/ResizableLayout/utils/validateLayout.js
 packages/app-desktop/gui/ResourceScreen.js
 packages/app-desktop/gui/Root.js
 packages/app-desktop/gui/Root_UpgradeSyncTarget.js
+packages/app-desktop/gui/ScheduleView/ScheduleView.js
 packages/app-desktop/gui/SearchBar/SearchBar.js
 packages/app-desktop/gui/ShareFolderDialog/ShareFolderDialog.js
 packages/app-desktop/gui/ShareNoteDialog.js
@@ -2197,3 +2198,4 @@ packages/tools/website/utils/types.js
 packages/whisper-voice-typing/src/index.js
 packages/whisper-voice-typing/src/specs/Whisper.nitro.js
 # AUTO-GENERATED - EXCLUDED TYPESCRIPT BUILD
+.agents/

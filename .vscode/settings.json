@@ -1,4 +1,5 @@
 {
 	"cSpell.enabled": true,
-	"editor.insertSpaces": false
+	"editor.insertSpaces": false,
+	"cmake.sourceDirectory": "/Users/dohuuphuoc/Documents/Waikato Uni/Trimester B/Compx574/joplin-osgroupw/packages/whisper-voice-typing/android"
 }

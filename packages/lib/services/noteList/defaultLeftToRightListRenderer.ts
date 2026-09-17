@@ -47,6 +47,7 @@ const defaultLeftToRightItemRenderer: ListRenderer = {
 		'note.isWatched',
 		'note.title',
 		'note.todo_completed',
+		'note.todo_due',
 	],
 
 	itemCss: // css
@@ -113,6 +114,11 @@ const defaultLeftToRightItemRenderer: ListRenderer = {
 					color: var(--joplin-color);
 				}
 
+				> .alarm-time {
+					padding-left: 8px;
+					opacity: 0.7;
+				}
+
 				> .titlecontent {
 					word-break: break-all;
 					overflow: hidden;
@@ -173,6 +179,7 @@ const defaultLeftToRightItemRenderer: ListRenderer = {
 				<i class="watchedicon fa fa-share-square"></i>
 				{{#note.is_locked}}<i class="lockedicon fa fa-lock"></i>{{/note.is_locked}}
 				<div class="titlecontent">{{note.title}}</div>
+				{{#note.is_todo}}{{#note.todo_due}}<div class="alarm-time">{{note.todo_due}}</div>{{/note.todo_due}}{{/note.is_todo}}
 			</div>
 			<div class="preview">{{notePreview}}</div>
 		</div>

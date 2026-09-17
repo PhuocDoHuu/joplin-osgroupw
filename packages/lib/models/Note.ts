@@ -316,9 +316,9 @@ export default class Note extends BaseItem {
 	}
 
 	// Note: sort logic must be duplicated in previews().
-	public static sortNotes(notes: NoteEntity[], orders: { by: string; dir: string }[], uncompletedTodosOnTop: boolean) {
+	public static sortNotes(notes: NoteEntity[], orders: { by: string; dir: string }[], _uncompletedTodosOnTop: boolean) {
 		const noteOnTop = (note: NoteEntity) => {
-			return uncompletedTodosOnTop && note.is_todo && !note.todo_completed;
+			return note.is_todo;
 		};
 
 		const noteFieldComp = <T>(f1: T, f2: T) => {
@@ -347,6 +347,12 @@ export default class Note extends BaseItem {
 		return notes.sort((a: NoteEntity, b: NoteEntity) => {
 			if (noteOnTop(a) && !noteOnTop(b)) return -1;
 			if (!noteOnTop(a) && noteOnTop(b)) return +1;
+			if (a.is_todo && b.is_todo) {
+				const aDue = a.todo_due || Number.MAX_SAFE_INTEGER;
+				const bDue = b.todo_due || Number.MAX_SAFE_INTEGER;
+				const dueOrder = noteFieldComp(aDue, bDue);
+				if (dueOrder) return dueOrder;
+			}
 
 			let r = 0;
 
@@ -481,34 +487,33 @@ export default class Note extends BaseItem {
 			}
 		}
 
-		if (!options.showCompletedTodos) {
-			options.conditions.push('todo_completed <= 0');
-		}
-
-		if (!withinTrash && options.uncompletedTodosOnTop && hasTodos) {
+		if (!withinTrash && hasTodos) {
 			let cond = options.conditions.slice();
 			cond.push('is_todo = 1');
-			cond.push('(todo_completed <= 0 OR todo_completed IS NULL)');
 			let tempOptions: PreviewsOptions = { ...options };
 			tempOptions.conditions = cond;
+			delete tempOptions.limit;
 
-			const uncompletedTodos = await this.search(tempOptions);
-			this.handleTitleNaturalSorting(uncompletedTodos, tempOptions);
+			const todos = await this.search(tempOptions);
+			this.sortNotes(todos, [], false);
+			const todoLimit = options.limit;
+			const sortedTodos = todoLimit ? todos.slice(0, todoLimit) : todos;
+			if (!hasNotes) return sortedTodos;
 
 			cond = options.conditions.slice();
-			if (hasNotes && hasTodos) {
-				cond.push('(is_todo = 0 OR (is_todo = 1 AND todo_completed > 0))');
-			} else {
-				cond.push('(is_todo = 1 AND todo_completed > 0)');
-			}
+			cond.push('is_todo = 0');
 
 			tempOptions = { ...options };
 			tempOptions.conditions = cond;
-			if ('limit' in tempOptions) tempOptions.limit -= uncompletedTodos.length;
+			if ('limit' in tempOptions) tempOptions.limit -= sortedTodos.length;
 			const theRest = await this.search(tempOptions);
 			this.handleTitleNaturalSorting(theRest, tempOptions);
 
-			return uncompletedTodos.concat(theRest);
+			return sortedTodos.concat(theRest);
+		}
+
+		if (!options.showCompletedTodos && !hasTodos) {
+			options.conditions.push('todo_completed <= 0');
 		}
 
 		if (hasNotes && hasTodos) {
