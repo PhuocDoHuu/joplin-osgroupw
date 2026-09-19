@@ -19,7 +19,10 @@ export default (override: OptionOverride = null): MarkupToHtmlOptions => {
 				linkRenderingType: LinkRenderingType.HrefHandler,
 			},
 		},
-		replaceResourceInternalToExternalLinks: true,
+		// Keep :/resourceId links until the renderer has resolved resourceInfos.
+		// The renderer's itemIdToUrl handler still gives Rich Text a clickable URL,
+		// while renderMedia needs the resource MIME type to create a PDF preview.
+		replaceResourceInternalToExternalLinks: false,
 		globalSettings: getGlobalSettings(Setting),
 		...override,
 	};

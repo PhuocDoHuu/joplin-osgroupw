@@ -762,8 +762,8 @@ const TinyMCE = (props: NoteBodyEditorProps, ref: Ref<NoteBodyEditorRef>) => {
 					'media-src \'self\' blob: data: *', // Audio and video players
 
 					// Disallow certain unused features
-					'child-src https://*.youtube.com https://*.youtube-nocookie.com', // Allow YouTube embeds
-					'object-src \'none\'', // Objects can be used for script injection
+					'child-src \'self\' file: blob: joplin-content: https://*.youtube.com https://*.youtube-nocookie.com',
+					'object-src \'self\' file: blob: joplin-content:',
 					'form-action \'none\'', // No submitting forms
 
 					// Styles: unsafe-inline: TinyMCE uses inline style="" styles.
