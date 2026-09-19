@@ -167,6 +167,29 @@ describe('MdToHtml', () => {
 		}
 	}));
 
+	it('should render PDF previews with HrefHandler', async () => {
+		const resourceId = '00000000000000000000000000000001';
+		const mdToHtml = newTestMdToHtml();
+
+		const result = await mdToHtml.render(`[pdf](:/${resourceId})`, null, {
+			bodyOnly: true,
+			plugins: {
+				link_open: {
+					linkRenderingType: LinkRenderingType.HrefHandler,
+				},
+			},
+			pdfViewerEnabled: true,
+			resources: {
+				[resourceId]: {
+					item: { id: resourceId, mime: 'application/pdf' },
+					localState: {},
+				},
+			},
+		});
+
+		expect(result.html).toContain('class="media-player media-pdf"');
+	});
+
 	it('should render an empty string', (async () => {
 		const mdToHtml = newTestMdToHtml();
 		const result = await mdToHtml.render('', null, { splitted: true });

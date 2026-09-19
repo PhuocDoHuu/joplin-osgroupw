@@ -1,5 +1,16 @@
 {
-	"cSpell.enabled": true,
-	"editor.insertSpaces": false,
-	"cmake.sourceDirectory": "/Users/dohuuphuoc/Documents/Waikato Uni/Trimester B/Compx574/joplin-osgroupw/packages/whisper-voice-typing/android"
+  "cSpell.enabled": true,
+  "cmake.sourceDirectory": "/Users/dohuuphuoc/Documents/Waikato Uni/Trimester B/Compx574/joplin-osgroupw/packages/whisper-voice-typing/android",
+  "editor.insertSpaces": false,
+  "editor.tabSize": 4,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  }
 }
