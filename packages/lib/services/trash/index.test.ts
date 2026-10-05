@@ -19,6 +19,18 @@ describe('services/trash', () => {
 		],
 		[
 			{
+				deleted_time: 0,
+				parent_id: '1',
+				id: 'a',
+			},
+			{
+				deleted_time: 1000,
+				id: '1',
+			},
+			'',
+		],
+		[
+			{
 				deleted_time: 1000,
 				parent_id: '1',
 				id: 'b',

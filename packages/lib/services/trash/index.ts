@@ -27,7 +27,13 @@ export const getDisplayParentId = (item: FolderEntity | NoteEntity, originalItem
 		throw new Error(`Missing "deleted_time" property: ${JSON.stringify(originalItemParent)}`);
 	}
 
-	if (!item.deleted_time) return item.parent_id;
+	if (!item.deleted_time) {
+		// A folder can be restored before its deleted parent. Keep its parent ID so
+		// that the hierarchy is restored if the parent is restored later, but show
+		// it at the root until then.
+		if (originalItemParent?.deleted_time) return '';
+		return item.parent_id;
+	}
 
 	if (!originalItemParent || !originalItemParent.deleted_time) return getTrashFolderId();
 

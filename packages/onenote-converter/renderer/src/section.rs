@@ -176,7 +176,7 @@ impl Renderer {
         let filename = filename_base.trim().replace("/", "_");
         let mut i = 0;
         let mut current_filename =
-            fs_driver().sanitize_file_name(&format!("{}{}", filename, extension));
+            self.sanitize_filename_preserving_extension(&filename, extension);
 
         loop {
             let current_full_path = fs_driver().join(parent_dir, &current_filename);
@@ -186,10 +186,50 @@ impl Renderer {
             }
 
             i += 1;
-            current_filename =
-                fs_driver().sanitize_file_name(&format!("{}_{}{}", filename, i, extension));
+            current_filename = self
+                .sanitize_filename_preserving_extension(&format!("{}_{}", filename, i), extension);
         }
 
         Ok(current_filename)
+    }
+
+    // `sanitize_filename` truncates complete filenames. If the extension is part
+    // of the input, that truncation can remove it and cause the HTML importer to
+    // skip an otherwise valid generated page.
+    fn sanitize_filename_preserving_extension(
+        &self,
+        filename_base: &str,
+        extension: &str,
+    ) -> String {
+        let mut base = filename_base.to_string();
+
+        loop {
+            let filename = fs_driver().sanitize_file_name(&format!("{}{}", base, extension));
+            if filename.ends_with(extension) {
+                return filename;
+            }
+
+            // Remove complete Unicode scalar values rather than bytes, so this
+            // also works for non-ASCII OneNote titles.
+            if base.pop().is_none() {
+                return fs_driver().sanitize_file_name(extension);
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Renderer;
+
+    #[test]
+    fn preserves_html_extension_for_long_page_titles() {
+        let renderer = Renderer::new();
+        let title = "a".repeat(260);
+
+        let filename = renderer.sanitize_filename_preserving_extension(&title, ".html");
+
+        assert!(filename.ends_with(".html"));
+        assert!(filename.len() <= 255);
     }
 }

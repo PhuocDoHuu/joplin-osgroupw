@@ -61,6 +61,22 @@ describe('restoreItems', () => {
 		expect((await Note.load(note2.id)).deleted_time).toBe(0);
 	});
 
+	it('should reconnect a child folder when its parent is restored later', async () => {
+		const parent = await Folder.save({});
+		const child = await Folder.save({ parent_id: parent.id });
+
+		await Folder.delete(child.id, { toTrash: true });
+		await Folder.delete(parent.id, { toTrash: true });
+
+		await restoreItems(ModelType.Folder, [await Folder.load(child.id)]);
+		expect((await Folder.load(child.id)).parent_id).toBe(parent.id);
+		expect((await Folder.load(child.id)).deleted_time).toBe(0);
+
+		await restoreItems(ModelType.Folder, [await Folder.load(parent.id)]);
+		expect((await Folder.load(parent.id)).deleted_time).toBe(0);
+		expect((await Folder.load(child.id)).parent_id).toBe(parent.id);
+	});
+
 	it('should restore a note, even if the parent folder no longer exists', async () => {
 		const folder = await Folder.save({});
 		const note = await Note.save({ parent_id: folder.id });

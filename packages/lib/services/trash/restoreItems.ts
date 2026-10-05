@@ -41,7 +41,11 @@ const restoreItems = async (itemType: ModelType, itemsOrIds: NoteEntity[] | Fold
 
 		const parentItem = await Folder.load(item.parent_id, { fields: ['id', 'deleted_time'] });
 		if (!parentItem || parentItem.deleted_time) {
-			if (options.useRestoreFolder) {
+			if (itemType === ModelType.Folder && parentItem?.deleted_time) {
+				// Keep the original parent ID so that restoring the parent later reconnects
+				// this folder. getDisplayParentId() renders the folder at the root while
+				// its parent remains in the trash.
+			} else if (options.useRestoreFolder) {
 				if (!restoreFolder) restoreFolder = await getRestoreFolder();
 				itemParentId = restoreFolder.id;
 			} else {
